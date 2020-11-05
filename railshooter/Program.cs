@@ -16,10 +16,6 @@ namespace railshooter
             {
                 Raylib.BeginDrawing();
 
-                Raylib.ClearBackground(Color.BEIGE);
-
-
-
                 if (scene == "intro")
                 {
                     Raylib.ClearBackground(Color.BEIGE);
@@ -31,11 +27,15 @@ namespace railshooter
                     {
                         scene = "game";
                     }
+                    else if (Raylib.IsKeyPressed(KeyboardKey.KEY_Q))
+                    {
+                        Raylib.WindowShouldClose(); //Fungerar inte
+                    }
 
                 }
                 else if (scene == "game")
                 {
-
+                    Raylib.ClearBackground(Color.GREEN);
                 }
 
 
