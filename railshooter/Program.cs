@@ -15,7 +15,8 @@ namespace railshooter
             int screenY = 900;
             int screenX = 1400;
             string scene = "intro";
-            Raylib.InitWindow(screenX, screenY, ":-)");
+            Raylib.InitWindow(screenX, screenY, "Hej");
+            Raylib.SetTargetFPS(60);
 
             bool exitGame = false;
 
@@ -43,8 +44,8 @@ namespace railshooter
                     Raylib.ClearBackground(Color.GREEN);
 
                     crossHair();
-
-
+                    enemy(screenX, screenY);
+                    
 
 
 
@@ -88,6 +89,56 @@ namespace railshooter
             // så bara ena änden av pistolen följer mauseX fast inte heal vägen
 
 
+        }
+        static void enemy(int screenX, int screenY){
+
+            List<Rectangle> enemies = new List<Rectangle>();
+
+            Rectangle e1 = new Rectangle(50,50,100,100);
+            Rectangle e2 = new Rectangle(200,200,100,100);
+
+            enemies.Add(e1);
+            enemies.Add(e2);
+            enemies.Add(new Rectangle(300,200,70,70));
+//------------------------------------------------------------------------//
+
+            for (int i = 0; i < enemies.Count; i++)
+            {
+                Raylib.DrawRectangleRec(enemies[i], Color.RED);
+            }
+
+            
+
+            
+
+            
+
+/*
+            float x = 0;
+           // float y = 0;
+            //int i =0;
+
+            //Random generator = new Random();
+
+
+            while (true)
+            {
+                //int tal = generator.Next(1, 101);
+                
+                {
+                    x += 1;
+                }
+      
+            Raylib.DrawRectangle((int)x, screenY, 100, 100, Color.BLACK);
+                
+            }
+
+
+            
+
+            i++;
+                if (i == i + 10 || x == screenX)
+  */
         }
 
         
