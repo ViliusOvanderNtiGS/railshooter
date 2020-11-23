@@ -10,7 +10,7 @@ namespace railshooter
         static void Main(string[] args)
         {
 
-            
+
 
             int screenY = 900;
             int screenX = 1400;
@@ -21,6 +21,7 @@ namespace railshooter
             bool exitGame = false;
 
             while (!Raylib.WindowShouldClose() && !exitGame)
+
             {
                 Raylib.BeginDrawing();
 
@@ -43,11 +44,12 @@ namespace railshooter
                 {
                     Raylib.ClearBackground(Color.GREEN);
 
-                    crossHair();
+                    Texture2D bg = Raylib.LoadTexture("bg_vatten1.png");
+                    Raylib.DrawTexture(bg, 0, 0, Color.WHITE);
+
                     enemy(screenX, screenY);
-                    
-
-
+                    crossHair();
+                    score(screenX);
 
 
                 }
@@ -65,24 +67,25 @@ namespace railshooter
             //Raylib.DrawText("Space to start", (screenX / 2) - 100, screenY / 4, 50, Color.BLACK);
             //Raylib.DrawText("Q to quit", (screenX / 2) - 100, (screenY / 4) + 100, 50, Color.BLACK);
             Vector2 pos = new Vector2(100, 50);
-            Vector2 pos1 = new Vector2(screenX/2,screenY/2);
-            Vector2 pos2 = new Vector2(screenX/2 - 100,screenY/2 + 100);
+            Vector2 pos1 = new Vector2(screenX / 2, screenY / 2);
+            Vector2 pos2 = new Vector2(screenX / 2 - 100, screenY / 2 + 100);
 
             Raylib.DrawTextEx(fonten, "INTRO", pos, 20, 0, Color.WHITE);
             Raylib.DrawTextEx(fonten, "Space to start", pos1, 50, 0, Color.WHITE);
             Raylib.DrawTextEx(fonten, "Q to quit", pos2, 60, 0, Color.WHITE);
         }
 
-        static void crossHair(){
+        static void crossHair()
+        {
 
             // Crosshair 
-                    int mouseX = Raylib.GetMouseX();
-                    int mouseY = Raylib.GetMouseY();
-                    Texture2D crosshair = Raylib.LoadTexture("crosshair.png");
-                    Raylib.HideCursor();
+            int mouseX = Raylib.GetMouseX();
+            int mouseY = Raylib.GetMouseY();
+            Texture2D crosshair = Raylib.LoadTexture("crosshair.png");
+            Raylib.HideCursor();
 
-                    Raylib.DrawTexture(crosshair, mouseX - 64, mouseY - 64, Color.WHITE);
-                    //Raylib.DrawTextureEx(crosshair, new Vector2(mouseX, mouseY), 0, 0.20f, Color.WHITE);
+            Raylib.DrawTexture(crosshair, mouseX - 64, mouseY - 64, Color.WHITE);
+            //Raylib.DrawTextureEx(crosshair, new Vector2(mouseX, mouseY), 0, 0.20f, Color.WHITE);
             // Pistol
 
             // meningen är att rita en pistol från botten mitten av skärmen som pipan följer musen
@@ -90,58 +93,58 @@ namespace railshooter
 
 
         }
-        static void enemy(int screenX, int screenY){
+        static void enemy(int screenX, int screenY)
+        {
 
             List<Rectangle> enemies = new List<Rectangle>();
 
-            Rectangle e1 = new Rectangle(50,50,100,100);
-            Rectangle e2 = new Rectangle(200,200,100,100);
+            Rectangle e1 = new Rectangle(50, 125, 90, 90);
+            Rectangle e2 = new Rectangle(200, 360, 110, 110);
 
             enemies.Add(e1);
             enemies.Add(e2);
-            enemies.Add(new Rectangle(300,200,70,70));
-//------------------------------------------------------------------------//
+            enemies.Add(new Rectangle(300, 650, 120, 120));
+            //------------------------------------------------------------------------//
 
             for (int i = 0; i < enemies.Count; i++)
             {
                 Raylib.DrawRectangleRec(enemies[i], Color.RED);
             }
+            /*
+                        float x = 0;
+                       // float y = 0;
+                        //int i =0;
 
-            
-
-            
-
-            
-
-/*
-            float x = 0;
-           // float y = 0;
-            //int i =0;
-
-            //Random generator = new Random();
+                        //Random generator = new Random();
 
 
-            while (true)
-            {
-                //int tal = generator.Next(1, 101);
-                
-                {
-                    x += 1;
-                }
-      
-            Raylib.DrawRectangle((int)x, screenY, 100, 100, Color.BLACK);
-                
-            }
+                        while (true)
+                        {
+                            //int tal = generator.Next(1, 101);
+
+                            {
+                                x += 1;
+                            }
+
+                        Raylib.DrawRectangle((int)x, screenY, 100, 100, Color.BLACK);
+
+                        }
 
 
-            
 
-            i++;
-                if (i == i + 10 || x == screenX)
-  */
+
+                        i++;
+                            if (i == i + 10 || x == screenX)
+              */
+        }
+        static void score(int screenX)
+        {
+            int score = 0;
+
+            Raylib.DrawText("Score " + score, (screenX / 2) - 100, 50, 50, Color.BLACK);
         }
 
-        
+
 
 
 
