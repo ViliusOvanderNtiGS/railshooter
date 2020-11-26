@@ -10,11 +10,10 @@ namespace railshooter
         static void Main(string[] args)
         {
 
-
-
             int screenY = 900;
             int screenX = 1400;
             string scene = "intro";
+            int score = 0;
             Raylib.InitWindow(screenX, screenY, "Hej");
             Raylib.SetTargetFPS(60);
 
@@ -47,9 +46,9 @@ namespace railshooter
                     Texture2D bg = Raylib.LoadTexture("bg_vatten1.png");
                     Raylib.DrawTexture(bg, 0, 0, Color.WHITE);
 
-                    enemy(screenX, screenY);
+                    score = enemy(screenX, screenY, score);
                     crossHair();
-                    score(screenX);
+                    Score(screenX, score);
 
 
                 }
@@ -93,12 +92,14 @@ namespace railshooter
 
 
         }
-        static void enemy(int screenX, int screenY)
+        static int enemy(int screenX, int screenY, int score)
         {
+            int e1PosX = 50;
+            int e1PosY = 125;
 
             List<Rectangle> enemies = new List<Rectangle>();
 
-            Rectangle e1 = new Rectangle(50, 125, 90, 90);
+            Rectangle e1 = new Rectangle(e1PosX, e1PosY, 90, 90);
             Rectangle e2 = new Rectangle(200, 360, 110, 110);
 
             enemies.Add(e1);
@@ -109,7 +110,26 @@ namespace railshooter
             for (int i = 0; i < enemies.Count; i++)
             {
                 Raylib.DrawRectangleRec(enemies[i], Color.RED);
+
+                Vector2 mousePos = Raylib.GetMousePosition();
+
+                if (Raylib.CheckCollisionPointRec(mousePos, enemies[i]) && Raylib.IsMouseButtonPressed(MouseButton.MOUSE_LEFT_BUTTON))
+                {
+                    score = score += 10;
+                    //Raylib. ta bort rectangeln enemies[den som är klickad på]
+
+                    Rectangle tmp = enemies[i];
+                    tmp.y = -900;
+                    enemies[i] = tmp;
+                }
             }
+
+            enemies.RemoveAll(enemy => enemy.y < 0);
+
+            #region piss
+
+
+
             /*
                         float x = 0;
                        // float y = 0;
@@ -136,13 +156,21 @@ namespace railshooter
                         i++;
                             if (i == i + 10 || x == screenX)
               */
+            #endregion
+
+
+
+
+
+            return score;
         }
-        static void score(int screenX)
+        static void Score(int screenX, int score)
         {
-            int score = 0;
+            //lägg till ett crit system med en random generator om nummer är >10 = crit = x2 score + crit text som ploppar upp
 
             Raylib.DrawText("Score " + score, (screenX / 2) - 100, 50, 50, Color.BLACK);
         }
+
 
 
 
