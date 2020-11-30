@@ -3,6 +3,17 @@ using System.Numerics;
 using Raylib_cs;
 using System.Collections.Generic;
 
+/* 
+    Att göra lista
+
+    få blocken att röra på sig
+    få blocken att röra på sig i olika hastighet
+    få blocken att försvinna när man trycker på dem
+    få blocken att dyka upp slumpat från kanten på skärmen
+    gör introscreen snyggare
+    kanske fixa fps om det går
+*/
+
 namespace railshooter
 {
     class Program
@@ -18,6 +29,21 @@ namespace railshooter
             Raylib.SetTargetFPS(60);
 
             bool exitGame = false;
+
+            // försök till movement
+            float x1 = 50;
+
+            List<Rectangle> enemies = new List<Rectangle>();
+
+            Rectangle e1 = new Rectangle((int)x1, 125, 90, 90);
+            Rectangle e2 = new Rectangle(200, 360, 110, 110);
+
+            enemies.Add(e1);
+            enemies.Add(e2);
+            enemies.Add(new Rectangle(300, 650, 120, 120));
+
+
+
 
             while (!Raylib.WindowShouldClose() && !exitGame)
 
@@ -46,7 +72,15 @@ namespace railshooter
                     Texture2D bg = Raylib.LoadTexture("bg_vatten1.png");
                     Raylib.DrawTexture(bg, 0, 0, Color.WHITE);
 
-                    score = enemy(screenX, screenY, score);
+
+                    //space är för tillfället försök till movement
+
+                    x1 += 1f;
+
+
+
+
+                    score = enemy(screenX, screenY, score, x1, enemies);
                     crossHair();
                     Score(screenX, score);
 
@@ -92,19 +126,12 @@ namespace railshooter
 
 
         }
-        static int enemy(int screenX, int screenY, int score)
+        static int enemy(int screenX, int screenY, int score, float x1, List<Rectangle> enemies)
         {
-            int e1PosX = 50;
+            // int e1PosX = 50;
             int e1PosY = 125;
 
-            List<Rectangle> enemies = new List<Rectangle>();
 
-            Rectangle e1 = new Rectangle(e1PosX, e1PosY, 90, 90);
-            Rectangle e2 = new Rectangle(200, 360, 110, 110);
-
-            enemies.Add(e1);
-            enemies.Add(e2);
-            enemies.Add(new Rectangle(300, 650, 120, 120));
             //------------------------------------------------------------------------//
 
             for (int i = 0; i < enemies.Count; i++)
@@ -112,6 +139,9 @@ namespace railshooter
                 Raylib.DrawRectangleRec(enemies[i], Color.RED);
 
                 Vector2 mousePos = Raylib.GetMousePosition();
+
+
+
 
                 if (Raylib.CheckCollisionPointRec(mousePos, enemies[i]) && Raylib.IsMouseButtonPressed(MouseButton.MOUSE_LEFT_BUTTON))
                 {
@@ -121,46 +151,11 @@ namespace railshooter
                     Rectangle tmp = enemies[i];
                     tmp.y = -900;
                     enemies[i] = tmp;
+                    //enemies.Remove(enemies);
                 }
             }
 
             enemies.RemoveAll(enemy => enemy.y < 0);
-
-            #region piss
-
-
-
-            /*
-                        float x = 0;
-                       // float y = 0;
-                        //int i =0;
-
-                        //Random generator = new Random();
-
-
-                        while (true)
-                        {
-                            //int tal = generator.Next(1, 101);
-
-                            {
-                                x += 1;
-                            }
-
-                        Raylib.DrawRectangle((int)x, screenY, 100, 100, Color.BLACK);
-
-                        }
-
-
-
-
-                        i++;
-                            if (i == i + 10 || x == screenX)
-              */
-            #endregion
-
-
-
-
 
             return score;
         }
