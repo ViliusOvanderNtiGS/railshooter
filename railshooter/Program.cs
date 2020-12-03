@@ -8,7 +8,7 @@ using System.Collections.Generic;
 
     få blocken att röra på sig
     få blocken att röra på sig i olika hastighet
-    få blocken att försvinna när man trycker på dem
+        // få blocken att försvinna när man trycker på dem
     få blocken att dyka upp slumpat från kanten på skärmen
     gör introscreen snyggare
     kanske fixa fps om det går
@@ -37,10 +37,11 @@ namespace railshooter
 
             Rectangle e1 = new Rectangle((int)x1, 125, 90, 90);
             Rectangle e2 = new Rectangle(200, 360, 110, 110);
+            Rectangle e3 = new Rectangle(300, 650, 120, 120);
 
             enemies.Add(e1);
             enemies.Add(e2);
-            enemies.Add(new Rectangle(300, 650, 120, 120));
+            enemies.Add(e3);
 
 
 
@@ -75,7 +76,31 @@ namespace railshooter
 
                     //space är för tillfället försök till movement
 
-                    x1 += 1f;
+
+                    for (int i = 0; i < enemies.Count; i++)
+                    {
+                        //enemies rörelser
+                        Rectangle tmp = enemies[i];
+                        tmp.x += 1;
+                        enemies[i] = tmp;
+                    }
+
+
+
+                    //enemies rörelser
+                    Rectangle tmp = enemies[0];
+                    tmp.x += 1;
+                    enemies[0] = tmp;
+
+                    //andra enemies
+                    Rectangle tmp = enemies[1];
+                    tmp.x += 2;
+                    enemies[1] = tmp;
+
+                    //tredje enemies
+                    Rectangle tmp = enemies[2];
+                    tmp.x += 3;
+                    enemies[2] = tmp;
 
 
 
