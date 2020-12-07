@@ -2,16 +2,17 @@
 using System.Numerics;
 using Raylib_cs;
 using System.Collections.Generic;
+using System.Linq;
 
 /* 
     Att göra lista
 
-    få blocken att röra på sig
-    få blocken att röra på sig i olika hastighet
+        // få blocken att röra på sig
+        // få blocken att röra på sig i olika hastighet
         // få blocken att försvinna när man trycker på dem
     få blocken att dyka upp slumpat från kanten på skärmen
     gör introscreen snyggare
-    kanske fixa fps om det går
+    kanske fixa fps om det går eller inte
 */
 
 namespace railshooter
@@ -25,6 +26,7 @@ namespace railshooter
             int screenX = 1400;
             string scene = "intro";
             int score = 0;
+            int miss = 0;
             Raylib.InitWindow(screenX, screenY, "Hej");
             Raylib.SetTargetFPS(60);
 
@@ -35,13 +37,20 @@ namespace railshooter
 
             List<Rectangle> enemies = new List<Rectangle>();
 
-            Rectangle e1 = new Rectangle((int)x1, 125, 90, 90);
+            Rectangle e1 = new Rectangle(50, 125, 90, 90);
             Rectangle e2 = new Rectangle(200, 360, 110, 110);
             Rectangle e3 = new Rectangle(300, 650, 120, 120);
 
             enemies.Add(e1);
             enemies.Add(e2);
             enemies.Add(e3);
+
+            List<int> speed = new List<int>();
+            speed.Add(15);
+            speed.Add(-10);
+            speed.Add(5);
+
+
 
 
 
@@ -81,33 +90,32 @@ namespace railshooter
                     {
                         //enemies rörelser
                         Rectangle tmp = enemies[i];
-                        tmp.x += 1;
+                        tmp.x += speed[i];
                         enemies[i] = tmp;
                     }
 
 
 
-                    //enemies rörelser
-                    Rectangle tmp = enemies[0];
-                    tmp.x += 1;
-                    enemies[0] = tmp;
 
-                    //andra enemies
-                    Rectangle tmp = enemies[1];
-                    tmp.x += 2;
-                    enemies[1] = tmp;
-
-                    //tredje enemies
-                    Rectangle tmp = enemies[2];
-                    tmp.x += 3;
-                    enemies[2] = tmp;
+                    //detta ska försöka spawna en till enemy på något sätt tycker jag
+                    if (enemies.Last().x > 80)
+                    {
+                        enemies.Add(new Rectangle(-500, 125, 90, 90));
+                        speed.Add(15);
+                    }
 
 
+                    // kan bheöva göra en list per rad av enemy så gör det senare lata fan
+                    if (enemies.Last().x > 80)
+                    {
+                        enemies.Add(new Rectangle(screenX + 100, 360, 90, 90));
+                        speed.Add(-10);
+                    }
 
-
-                    score = enemy(screenX, screenY, score, x1, enemies);
+                    score = enemy(screenX, screenY, score, x1, enemies, miss);
                     crossHair();
                     Score(screenX, score);
+                    Miss(screenX, screenY, miss);
 
 
                 }
@@ -151,10 +159,10 @@ namespace railshooter
 
 
         }
-        static int enemy(int screenX, int screenY, int score, float x1, List<Rectangle> enemies)
+        static int enemy(int screenX, int screenY, int score, float x1, List<Rectangle> enemies, int miss)
         {
             // int e1PosX = 50;
-            int e1PosY = 125;
+
 
 
             //------------------------------------------------------------------------//
@@ -178,23 +186,33 @@ namespace railshooter
                     enemies[i] = tmp;
                     //enemies.Remove(enemies);
                 }
+
+                //lägga till i miss
+                /*
+                if (enemies[i].x => screenX){
+                    miss++;
+                }
+                */
             }
 
             enemies.RemoveAll(enemy => enemy.y < 0);
 
             return score;
+            return miss;
         }
         static void Score(int screenX, int score)
         {
             //lägg till ett crit system med en random generator om nummer är >10 = crit = x2 score + crit text som ploppar upp
 
             Raylib.DrawText("Score " + score, (screenX / 2) - 100, 50, 50, Color.BLACK);
+
         }
 
+        static void Miss(int screenX, int screenY, int miss)
+        {
+            Raylib.DrawText("Miss " + miss, (screenX / 2) - 100, screenY - 150, 50, Color.BLACK);
 
-
-
-
+        }
 
     }
 }
