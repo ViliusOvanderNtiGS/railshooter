@@ -9,8 +9,8 @@ using System.Linq;
 
         // få blocken att röra på sig
         // få blocken att röra på sig i olika hastighet
-        // få blocken att försvinna när man trycker på dem
-    // nej // få blocken att dyka upp slumpat från kanten på skärmen
+    få blocken att försvinna när man trycker på dem
+    få blocken att dyka upp från kanten på skärmen
     gör introscreen snyggare
     crit system med slump
     kanske fixa fps om det går eller inte
@@ -19,19 +19,25 @@ using System.Linq;
 namespace railshooter
 {
 
-    public struct EnemyStruct
+    public class EnemyStruct
     {
         public Rectangle rect;
-        public int dir;
+        public float speed;
         public int row;
 
-        public EnemyStruct(Rectangle rect, int dir, int row)
+        public EnemyStruct(Rectangle rect, float speed, int row)
         {
             this.rect = rect;
-            this.dir = dir;
+            this.speed = speed;
             this.row = row;
         }
+        public void Update()
+        {
+            this.rect.x += speed;
+            Raylib.DrawText(this.rect.x.ToString(), 0, 0, 40, Color.ORANGE);
+        }
     }
+
     class Program
     {
         static void Main(string[] args)
@@ -67,12 +73,16 @@ namespace railshooter
             speed.Add(-10);
             speed.Add(5);
 
+
+            //Lista till struct
             List<EnemyStruct> enemyList = new List<EnemyStruct>();
             enemyList.Add(new EnemyStruct(e1, 15, 1));
 
+            List<EnemyStruct> enemyList1 = new List<EnemyStruct>();
+            enemyList1.Add(new EnemyStruct(e2, -10, 2));
 
-
-
+            List<EnemyStruct> enemyList2 = new List<EnemyStruct>();
+            enemyList2.Add(new EnemyStruct(e3, 5, 3));
 
 
 
@@ -107,74 +117,86 @@ namespace railshooter
 
 
                     // försök till att använda structurer
-                    // men det funkade inte tydligen 
-                    /*
+
+
 
                     for (int i = 0; i < enemyList.Count; i++)
                     {
                         EnemyStruct e = enemyList[i];
-                        enemyList[i].rect.x += 15;
-                    }
-
-                    for (int i = 0; i < enemyList.Count; i++)
-                    {
-                        EnemyStruct e = enemyList[i];
+                        e.Update();
                         Raylib.DrawRectangle((int)e.rect.x, (int)e.rect.y, (int)e.rect.width, (int)e.rect.height, Color.WHITE);
                     }
+
+
+
+
+
+
+                    /*
+
+                                        for (int i = 0; i < enemies.Count; i++)
+                                        {
+                                            //enemies rörelser
+                                            Rectangle tmp = enemies[i];
+                                            tmp.x += speed[i];
+                                            enemies[i] = tmp;
+                                        }
+
+                                        for (int i = 0; i < enemies1.Count; i++)
+                                        {
+                                            //enemies rörelser
+                                            Rectangle tmp = enemies1[i];
+                                            tmp.x += speed[i];
+                                            enemies1[i] = tmp;
+                                        }
+
+                                        for (int i = 0; i < enemies2.Count; i++)
+                                        {
+                                            //enemies rörelser
+                                            Rectangle tmp = enemies2[i];
+                                            tmp.x += speed[i];
+                                            enemies2[i] = tmp;
+                                        }
+
                     */
 
 
-
-
-
-
-                    for (int i = 0; i < enemies.Count; i++)
-                    {
-                        //enemies rörelser
-                        Rectangle tmp = enemies[i];
-                        tmp.x += speed[i];
-                        enemies1[i] = tmp;
-                    }
-
-                    for (int i = 0; i < enemies1.Count; i++)
-                    {
-                        //enemies rörelser
-                        Rectangle tmp = enemies1[i];
-                        tmp.x += speed[i];
-                        enemies1[i] = tmp;
-                    }
-
-                    for (int i = 0; i < enemies2.Count; i++)
-                    {
-                        //enemies rörelser
-                        Rectangle tmp = enemies2[i];
-                        tmp.x += speed[i];
-                        enemies1[i] = tmp;
-                    }
-
-
-
-
                     //detta ska försöka spawna en till enemy på något sätt tycker jag
-                    if (enemies.Last().x > 80)
+                    if (enemyList.Last().rect.x > 80)
                     {
-                        enemies.Add(new Rectangle(-500, 125, 90, 90));
+                        enemyList.Add(new EnemyStruct(new Rectangle(-500, 125, 90, 90), 15, 1));
                         speed.Add(15);
                     }
 
-                    // kan bheöva göra en list per rad av enemy så gör det senare lata fan
-                    if (enemies1.Last().x > 80)
+                    if (enemyList1.Last().rect.x > 80)
                     {
-                        enemies1.Add(new Rectangle(screenX + 100, 360, 90, 90));
+                        enemyList1.Add(new EnemyStruct(new Rectangle((screenX - 220), 360, 110, 110), -15, 2));
                         speed.Add(-10);
                     }
 
-                    if (enemies2.Last().x > 80)
+                    if (enemyList2.Last().rect.x > 80)
                     {
-                        enemies2.Add(new Rectangle(300, 650, 120, 120));
-                        speed.Add(-10);
+                        enemyList2.Add(new EnemyStruct(new Rectangle(-300, 650, 120, 120), 5, 3));
+                        speed.Add(5);
                     }
 
+
+
+                    /*
+                                        // kan bheöva göra en list per rad av enemy så gör det senare lata fan
+                                        if (enemies1.Last().x < screenX - 170)
+
+                                        {
+                                            enemies1.Add(new Rectangle(screenX + 100, 360, 90, 90));
+                                            speed.Add(-10);
+                                        }
+
+                                        if (enemies2.Last().x > 80 && enemies2.Count < 4)
+                                        {
+                                            enemies2.Add(new Rectangle(300, 650, 120, 120));
+                                            speed.Add(-10);
+                                        }
+                    */
 
 
 
@@ -230,11 +252,9 @@ namespace railshooter
             // int e1PosX = 50;
 
 
-
-            //------------------------------------------------------------------------//
-
             Random generator = new Random();
 
+            //enemies
             for (int i = 0; i < enemies.Count; i++)
             {
                 Raylib.DrawRectangleRec(enemies[i], Color.RED);
@@ -271,7 +291,65 @@ namespace railshooter
                 */
             }
 
+            //enemies1
+            for (int i = 0; i < enemies1.Count; i++)
+
+            {
+                Raylib.DrawRectangleRec(enemies1[i], Color.RED);
+
+                Vector2 mousePos = Raylib.GetMousePosition();
+
+
+                if (Raylib.CheckCollisionPointRec(mousePos, enemies1[i]) && Raylib.IsMouseButtonPressed(MouseButton.MOUSE_LEFT_BUTTON))
+                {
+                    score = score += 10;
+                    //slumpad crit system 
+
+                    int crit = generator.Next(0, 101);
+
+                    if (crit >= 90)
+                    {
+                        score = score += 15;
+                    }
+
+                    Rectangle tmp = enemies1[i];
+                    tmp.y = -900;
+                    enemies1[i] = tmp;
+                    //enemies.Remove(enemies);
+                }
+            }
+
+            //enemies2
+            for (int i = 0; i < enemies2.Count; i++)
+
+            {
+                Raylib.DrawRectangleRec(enemies2[i], Color.RED);
+
+                Vector2 mousePos = Raylib.GetMousePosition();
+
+
+                if (Raylib.CheckCollisionPointRec(mousePos, enemies2[i]) && Raylib.IsMouseButtonPressed(MouseButton.MOUSE_LEFT_BUTTON))
+                {
+                    score = score += 10;
+                    //slumpad crit system 
+                    //det är inte så tydlig kanske men den funkar när man spelar
+
+                    int crit = generator.Next(0, 101);
+
+                    if (crit >= 90)
+                    {
+                        score = score += 15;
+                    }
+
+                    Rectangle tmp = enemies2[i];
+                    tmp.y = -900;
+                    enemies2[i] = tmp;
+                }
+            }
+
             enemies.RemoveAll(enemy => enemy.y < 0);
+            enemies1.RemoveAll(enemy => enemy.y < 0);
+            enemies2.RemoveAll(enemy => enemy.y < 0);
 
             return score;
             //return miss;
