@@ -10,9 +10,9 @@ using System.Linq;
         // få blocken att röra på sig
         // få blocken att röra på sig i olika hastighet
     få blocken att försvinna när man trycker på dem
-    få blocken att dyka upp från kanten på skärmen
+        //få blocken att dyka upp från kanten på skärmen
     gör introscreen snyggare
-    crit system med slump
+    (det fungerar men man märker knappt det)    // crit system med slump
     kanske fixa fps om det går eller inte
 */
 
@@ -58,7 +58,7 @@ namespace railshooter
             Rectangle e1 = new Rectangle(50, 125, 90, 90);
 
             List<Rectangle> enemies1 = new List<Rectangle>();
-            Rectangle e2 = new Rectangle(200, 360, 110, 110);
+            Rectangle e2 = new Rectangle(screenX, 360, 110, 110);
 
             List<Rectangle> enemies2 = new List<Rectangle>();
             Rectangle e3 = new Rectangle(300, 650, 120, 120);
@@ -79,10 +79,10 @@ namespace railshooter
             enemyList.Add(new EnemyStruct(e1, 15, 1));
 
             List<EnemyStruct> enemyList1 = new List<EnemyStruct>();
-            enemyList1.Add(new EnemyStruct(e2, -10, 2));
+            enemyList1.Add(new EnemyStruct(e2, -10, 1));
 
             List<EnemyStruct> enemyList2 = new List<EnemyStruct>();
-            enemyList2.Add(new EnemyStruct(e3, 5, 3));
+            enemyList2.Add(new EnemyStruct(e3, 5, 1));
 
 
 
@@ -123,6 +123,20 @@ namespace railshooter
                     for (int i = 0; i < enemyList.Count; i++)
                     {
                         EnemyStruct e = enemyList[i];
+                        e.Update();
+                        Raylib.DrawRectangle((int)e.rect.x, (int)e.rect.y, (int)e.rect.width, (int)e.rect.height, Color.WHITE);
+                    }
+
+                    for (int i = 0; i < enemyList1.Count; i++)
+                    {
+                        EnemyStruct e = enemyList1[i];
+                        e.Update();
+                        Raylib.DrawRectangle((int)e.rect.x, (int)e.rect.y, (int)e.rect.width, (int)e.rect.height, Color.WHITE);
+                    }
+
+                    for (int i = 0; i < enemyList2.Count; i++)
+                    {
+                        EnemyStruct e = enemyList2[i];
                         e.Update();
                         Raylib.DrawRectangle((int)e.rect.x, (int)e.rect.y, (int)e.rect.width, (int)e.rect.height, Color.WHITE);
                     }
@@ -168,9 +182,9 @@ namespace railshooter
                         speed.Add(15);
                     }
 
-                    if (enemyList1.Last().rect.x > 80)
+                    if (enemyList1.Last().rect.x < ((screenX / 4) * 3))
                     {
-                        enemyList1.Add(new EnemyStruct(new Rectangle((screenX - 220), 360, 110, 110), -15, 2));
+                        enemyList1.Add(new EnemyStruct(new Rectangle((screenX + 220), 360, 110, 110), -15, 2));
                         speed.Add(-10);
                     }
 
@@ -182,21 +196,21 @@ namespace railshooter
 
 
 
-                    /*
-                                        // kan bheöva göra en list per rad av enemy så gör det senare lata fan
-                                        if (enemies1.Last().x < screenX - 170)
+/*
+                    // kan bheöva göra en list per rad av enemy så gör det senare lata fan
+                    if (enemies1.Last().x < screenX - 170)
 
-                                        {
-                                            enemies1.Add(new Rectangle(screenX + 100, 360, 90, 90));
-                                            speed.Add(-10);
-                                        }
+                    {
+                        enemies1.Add(new Rectangle(screenX + 100, 360, 90, 90));
+                        speed.Add(-10);
+                    }
 
-                                        if (enemies2.Last().x > 80 && enemies2.Count < 4)
-                                        {
-                                            enemies2.Add(new Rectangle(300, 650, 120, 120));
-                                            speed.Add(-10);
-                                        }
-                    */
+                    if (enemies2.Last().x > 80 && enemies2.Count < 4)
+                    {
+                        enemies2.Add(new Rectangle(300, 650, 120, 120));
+                        speed.Add(-10);
+                    }
+*/
 
 
 
