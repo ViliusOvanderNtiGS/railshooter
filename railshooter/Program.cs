@@ -1,4 +1,5 @@
-﻿using System;
+﻿using System.Data.Common;
+using System;
 using System.Numerics;
 using Raylib_cs;
 using System.Collections.Generic;
@@ -21,7 +22,7 @@ using System.Linq;
 
 /*  Att göra bättre
     1. Metoden vid 254 har nästan samma kåd 3 gångger. 
-    2. Gör introscreen snyggare
+    2. Gör introscreen snyggare och riktiga måltavlor. 
     3. tydligare critsystem med att det kanske flyger upp en text när man får en crit. 
 */
 
@@ -37,7 +38,7 @@ using System.Linq;
 
 namespace railshooter
 {
-    #region EnemyStruct
+    #region EnemyStruct som igentligen är en class
 
     public class EnemyStruct
     {
@@ -52,7 +53,7 @@ namespace railshooter
         public void Update()
         {
             this.rect.x += speed;
-            Raylib.DrawText(this.rect.x.ToString(), 0, 0, 40, Color.ORANGE);
+            //Raylib.DrawText(this.rect.x.ToString(), 0, 0, 40, Color.ORANGE);
         }
     }
     #endregion
@@ -101,6 +102,8 @@ namespace railshooter
             while (!Raylib.WindowShouldClose() && !exitGame)
 
             {
+
+
                 Raylib.BeginDrawing();
 
                 #region intro
@@ -122,16 +125,17 @@ namespace railshooter
                 }
                 #endregion
 
-                #region backgrund och structförsök
+                #region backgrund och structförsök (game skärmen)
 
                 else if (scene == "game")
                 {
+
                     Raylib.ClearBackground(Color.GREEN);
 
                     Texture2D bg = Raylib.LoadTexture("bg_vatten1.png");
                     Raylib.DrawTexture(bg, 0, 0, Color.WHITE);
 
-
+                    Raylib.DrawFPS(40, 40);
                     // försök till att använda structurer
 
                     for (int i = 0; i < enemyList.Count; i++)
@@ -178,15 +182,11 @@ namespace railshooter
                     }
                     #endregion
 
-
-
                     //metoder
                     score = enemy(screenX, screenY, score, miss, enemyList, enemyList1, enemyList2);
                     crossHair();
                     Score(screenX, score);
-                    Miss(screenX, screenY, miss); //(används inte)
-
-
+                    Miss(screenX, screenY, miss); //(används inte än)
                 }
 
 
@@ -230,7 +230,7 @@ namespace railshooter
         }
         static int enemy(int screenX, int screenY, int score, int miss, List<EnemyStruct> enemyList, List<EnemyStruct> enemyList1, List<EnemyStruct> enemyList2)
         {
-
+            //för crit-system
             Random generator = new Random();
 
             //enemies
@@ -245,7 +245,7 @@ namespace railshooter
                 {
                     score = score += 10;
                     //slumpad crit system 
-
+                    // detta kan vara i en metod
                     int crit = generator.Next(0, 101);
 
                     if (crit >= 90)
@@ -260,6 +260,13 @@ namespace railshooter
                     tmp.y = -900;
                     enemyList[i].rect = tmp;
                     //enemies.Remove(enemies);
+                }
+
+                if (enemyList[i].rect.x >= screenX + 100)
+                {
+                    Rectangle tmp = enemyList[i].rect;
+                    tmp.y = -900;
+                    enemyList[i].rect = tmp;
                 }
 
 
@@ -291,6 +298,12 @@ namespace railshooter
                     enemyList1[i].rect = tmp;
                     //enemies.Remove(enemies);
                 }
+                if (enemyList1[i].rect.x <= -100)
+                {
+                    Rectangle tmp = enemyList1[i].rect;
+                    tmp.y = -900;
+                    enemyList1[i].rect = tmp;
+                }
             }
 
             //enemies2
@@ -315,6 +328,13 @@ namespace railshooter
                         score = score += 15;
                     }
 
+                    Rectangle tmp = enemyList2[i].rect;
+                    tmp.y = -900;
+                    enemyList2[i].rect = tmp;
+                }
+
+                if (enemyList2[i].rect.x >= screenX + 100)
+                {
                     Rectangle tmp = enemyList2[i].rect;
                     tmp.y = -900;
                     enemyList2[i].rect = tmp;
