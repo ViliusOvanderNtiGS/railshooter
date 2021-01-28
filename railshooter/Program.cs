@@ -10,6 +10,7 @@ using System.Linq;
 
 /*     Att göra lista
 
+    Gör så att man kan förlora med för många misses
         // Byt ut så att alla enemies är i struct listan
         // få blocken att röra på sig
         // få blocken att röra på sig i olika hastighet
@@ -18,6 +19,8 @@ using System.Linq;
     gör introscreen snyggare
     (det fungerar men man märker knappt det)    // crit system med slump
     kanske fixa fps
+    ta bort kuberna från lista så att det blir bättre fps och inte tar upp minne
+    städa upp kåd
 */
 
 /*  Att göra bättre
@@ -76,9 +79,9 @@ namespace railshooter
 
 
             // Gör enemies till listan
-            Rectangle e1 = new Rectangle(50, 125, 90, 90);
-            Rectangle e2 = new Rectangle(screenX, 360, 110, 110);
-            Rectangle e3 = new Rectangle(300, 650, 120, 120);
+            Rectangle e1 = new Rectangle(-300, 125, 90, 90);
+            Rectangle e2 = new Rectangle(screenX + 300, 360, 110, 110);
+            Rectangle e3 = new Rectangle(-300, 650, 120, 120);
 
             //Lista till struct
             List<EnemyStruct> enemyList = new List<EnemyStruct>();
@@ -89,14 +92,14 @@ namespace railshooter
 
             List<EnemyStruct> enemyList2 = new List<EnemyStruct>();
             enemyList2.Add(new EnemyStruct(e3, 5));
-
-            // Lista till speed som läggs till
-            List<int> speed = new List<int>();
-            speed.Add(15);
-            speed.Add(-10);
-            speed.Add(5);
+            /*
+                        // Lista till speed som läggs till
+                        List<int> speed = new List<int>();
+                        speed.Add(15);
+                        speed.Add(-10);
+                        speed.Add(5);
+            */
             #endregion
-
 
             // main loop
             while (!Raylib.WindowShouldClose() && !exitGame)
@@ -162,23 +165,23 @@ namespace railshooter
 
                     #region enemy spawn
 
-                    //detta ska försöka spawna en till enemy på något sätt tycker jag
-                    if (enemyList.Last().rect.x > 80)
+                    //detta ska spawna en till enemy 
+                    if (enemyList.Last().rect.x > 0)
                     {
-                        enemyList.Add(new EnemyStruct(new Rectangle(-500, 125, 90, 90), 15));
-                        speed.Add(15);
+                        enemyList.Add(new EnemyStruct(new Rectangle(-300, 125, 90, 90), 15));
+                        //  speed.Add(15);
                     }
 
-                    if (enemyList1.Last().rect.x < ((screenX / 4) * 3))
+                    if (enemyList1.Last().rect.x < screenX)
                     {
-                        enemyList1.Add(new EnemyStruct(new Rectangle((screenX + 220), 360, 110, 110), -15));
-                        speed.Add(-10);
+                        enemyList1.Add(new EnemyStruct(new Rectangle((screenX + 300), 360, 110, 110), -15));
+                        //  speed.Add(-15);
                     }
 
-                    if (enemyList2.Last().rect.x > 80)
+                    if (enemyList2.Last().rect.x > 0)
                     {
                         enemyList2.Add(new EnemyStruct(new Rectangle(-300, 650, 120, 120), 5));
-                        speed.Add(5);
+                        //   speed.Add(5);
                     }
                     #endregion
 
